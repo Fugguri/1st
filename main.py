@@ -25,8 +25,7 @@ async def on_shutdown(_):
 @dp.message_handler(commands=['start'])  # начало работы бота
 async def start(message: types.Message):
     users[message.chat.id] = {}
-    await message.answer(text="Из какого ты города?",
-                         reply_markup=start_markup)
+    await message.answer(text="Из какого ты города?", reply_markup=start_markup)
    #  await message.delete()
 
 number = ""
@@ -51,11 +50,15 @@ async def dont_allow_text(message: types.Message, state: FSMContext):
 @dp.callback_query_handler(lambda call: call.data.startswith('c'))
 async def reg(callback: types.CallbackQuery):
     global number
+    output = users[callback.message.chat.id]["Навыки"]
     if callback.data == 'c_servise':
-        number += "Обслуживание и сервис\n"
-        users[callback.message.chat.id]["Навыки"].append(
-            "Обслуживание и сервис")
-        await callback.message.edit_text(text=f"{number}", reply_markup=get_inline_keyboard())
+        a = "Обслуживание и сервис"
+        if a not in output:
+          users[callback.message.chat.id]["Навыки"].append(a)
+        elif :
+          output.remove(a)
+      
+        await callback.message.edit_text(text=f"{output}", reply_markup=get_inline_keyboard())
         await callback.answer()
     if callback.data == 'c_tele_sales_b':
         users[callback.message.chat.id]["Навыки"].append(
@@ -85,12 +88,10 @@ async def reg(callback: types.CallbackQuery):
 @dp.callback_query_handler()
 async def city(callback: types.CallbackQuery):
     if callback.data == 'Москва' or callback.data == 'Санкт-Петербург':
-
         users[callback.message.chat.id]["Город"] = callback.data
         await bot.send_message(chat_id=callback.message.chat.id, text="Любишь общаться с людьми?", reply_markup=communicate)
         await callback.answer()
     elif callback.data == 'Другое':
-
         users[callback.message.chat.id]["Город"] = callback.data
         await bot.send_message(chat_id=callback.message.chat.id, text="В других городах нас нет, но в будущем мы обязательно придем:)")
         await callback.answer()
