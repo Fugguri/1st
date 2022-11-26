@@ -1,2 +1,5 @@
 Emplouers.xlsx
 config.py
+.gitignore
+/__pycache__
+/env
