@@ -36,8 +36,8 @@ ready_to_study.add(yes_botton, no_button)
 # опрос по навыкам
 
 
-next_coll = ReplyKeyboardMarkup(resize_keyboard=True)
-next = KeyboardButton("Дальше")
+next_coll = InlineKeyboardMarkup()
+next = InlineKeyboardButton(text="Дальше", callback_data="next")
 next_coll.add(next)
 a = ReplyKeyboardRemove()
 
@@ -64,7 +64,7 @@ def get_inline_keyboard() -> InlineKeyboardMarkup:
 
 def clear_state() -> InlineKeyboardMarkup:
     experience = ReplyKeyboardMarkup(resize_keyboard=True)
-    kb = KeyboardButton("Очистить")
+    kb = KeyboardButton("Начать сначала")
     experience.add(kb)
 
     return experience
