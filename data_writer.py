@@ -13,14 +13,38 @@ def add_items(items: dict, ):
         book.close
 
     date = datetime.date.today()
-    a = str(items["id"])
-    b = str(items["full_name"])
-    c = str(items["phone"])
-    d = str(items["age"])
-    e = str(items["city"])
-    f = str(items["clients"])
-    g = str(items["departament"])
-    k = " ".join(items["skills"])
+    if items["id"]:
+        a = str(items["id"])
+    else:
+        a = ""
+    if items["full_name"]:
+        b = str(items["full_name"])
+    else:
+        b = ""
+    if items["phone"]:
+        c = str(items["phone"])
+    else:
+        c = ""
+    if items["age"]:
+        d = str(items["age"])
+    else:
+        d = ""
+    if items["city"]:
+        e = str(items["city"])
+    else:
+        e = ""
+    if items["clients"]:
+        f = str(items["clients"])
+    else:
+        f = ""
+    if items["departament"]:
+        g = str(items["departament"])
+    else:
+        g = ""
+    if items["skills"]:
+        k = " ".join(items["skills"])
+    else:
+        k = ""
 
     book = openpyxl.open("Emplouers.xlsx")
     sheet = book.active
