@@ -6,7 +6,7 @@ from keyboards import *
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
 from aiogram.dispatcher.storage import FSMContext
 from data_writer import add_items
-from asyncio import sleep
+
 
 storage = MemoryStorage()
 bot = Bot(TOKEN_API, parse_mode="HTML")
@@ -27,6 +27,9 @@ async def on_shutdown(_):
 
 if __name__ == "__main__":
     from handlers import dp
-    executor.start_polling(dp, skip_updates=True,
-                           on_startup=on_startup,
-                           on_shutdown=on_shutdown)
+    executor.start_polling(
+        dispatcher=dp,
+        skip_updates=True,
+        on_startup=on_startup,
+        on_shutdown=on_shutdown
+    )

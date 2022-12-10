@@ -8,6 +8,7 @@ from data_writer import add_items
 from main import dp, bot, users
 from asyncio import sleep
 from pathlib import Path
+from ..others.others import start
 
 
 class Resume(StatesGroup):
@@ -16,13 +17,14 @@ class Resume(StatesGroup):
     resume = State()
 
 
-# @ dp.message_handler(Text(equals="Начать сначала"), state="*")
-# async def dont_allow_text(message: types.Message, state: FSMContext):
-#     current_state = state.get_state()
-#     if current_state is None:
-#         return
-#     await state.finish()
-#     await message.reply("Отменил\n/start чтобы начать сначала")
+@ dp.message_handler(Text(equals="Начать сначала"), state="*")
+async def dont_allow_text(message: types.Message, state: FSMContext):
+    current_state = state.get_state()
+    if current_state is None:
+        return
+    await state.finish()
+    await message.reply("Отменил")
+    await start()
 
 
 @dp.callback_query_handler(lambda call: call.data == 'Com NO')
@@ -78,8 +80,13 @@ async def chech_age(message: types.Message, state: FSMContext):
 async def save_age(message: types.Message, state: FSMContext):
     async with state.proxy() as data:
         data["id"] = message.from_user.id
-        data["city"] = users[message.from_user.id]["Город"]
         data["age"] = "-"
+        try:
+            users[message.from_user.id]["Город"]
+        except:
+            users[message.from_user.id]["Город"] = []
+        finally:
+            data["city"] = users[message.from_user.id]["Город"]
 
         try:
             users[message.from_user.id]["Работал с клиентами"]
@@ -102,7 +109,7 @@ async def save_age(message: types.Message, state: FSMContext):
     add_items(data)
     await save_resume(message, state)
     await state.finish()
-    await message.answer("Отлично✅\nМы вернемся с обратной связью в течении 3х рабочих дней (с 10.00 до 19.00)")
+    await message.answer("Отлично✅\nМы вернемся с обратной связью в течение 3-х рабочих дней (с 10.00 до 19.00)")
 
 
 async def save_resume(message: types.Message, state: FSMContext):
@@ -117,4 +124,8 @@ async def save_resume(message: types.Message, state: FSMContext):
     async with state.proxy() as data:
         file_on_disk = Path(
             "Резюме/", f"{data['full_name'].replace(' ','_')}_id{message.from_user.id}.{message.document.mime_subtype}")
-    await bot.download_file(file_path, destination=file_on_disk)
+
+    ADMIN_ID = 730881710
+    await bot.send_message(chat_id=ADMIN_ID, text=data['full_name'])
+    await bot.send_document(chat_id=ADMIN_ID, document=message.document.file_id,)
+    await bot.download_file(file_path, destination=file_on_disk,)

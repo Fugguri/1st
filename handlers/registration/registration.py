@@ -7,21 +7,23 @@ from aiogram.dispatcher.storage import FSMContext
 from data_writer import add_items
 from main import dp, bot, users
 from asyncio import sleep
+from ..others.others import start
+
+
+@ dp.message_handler(Text(equals="Начать сначала"), state="*")
+async def dont_allow_text(message: types.Message, state: FSMContext):
+    current_state = state.get_state()
+    if current_state is None:
+        return
+    await state.finish()
+    await message.reply("Отменил")
+    await start()
 
 
 class MyStatesGroup(StatesGroup):
     full_name = State()
     age = State()
     phone = State()
-
-
-# @ dp.message_handler(Text(equals="Начать сначала"), state="*")
-# async def dont_allow_text(message: types.Message, state: FSMContext):
-#     current_state = state.get_state()
-#     if current_state is None:
-#         return
-#     await state.finish()
-#     await message.reply("Отменил\n/start чтобы начать сначала")
 
 
 @dp.callback_query_handler(lambda call: call.data == "next")
@@ -134,5 +136,5 @@ async def save_age(message: types.Message, state: FSMContext):
         finally:
             data["departament"] = users[message.from_user.id]["Отделение"]
     await state.finish()
-    await message.answer("Отлично✅\nМы вернемся с обратной связью в течении 3х рабочих дней (с 10.00 до 19.00)")
+    await message.answer("Отлично✅\nМы вернемся с обратной связью в течение 3-х рабочих дней (с 10.00 до 19.00)")
     add_items(data)

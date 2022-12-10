@@ -9,29 +9,36 @@ button2 = InlineKeyboardButton(
     "🌉Санкт-Петербург", callback_data='Санкт-Петербург')
 button3 = InlineKeyboardButton(
     "🇷🇺Другое", callback_data='Другое')
+
 start_markup.add(button1, button2, button3)
 
-communicate = InlineKeyboardMarkup()  # Любишь общаться?
+communicate = InlineKeyboardMarkup(row_width=2)  # Любишь общаться?
 yes_botton = InlineKeyboardButton(
     "👍", callback_data='Com YES')
 no_button = InlineKeyboardButton(
     "👎", callback_data='Com NO')
-communicate.add(yes_botton, no_button)
+reset = form_accept = InlineKeyboardButton(
+    "Начать сначала", callback_data='reset')
+communicate.add(yes_botton, no_button, reset)
 
-client_experiens = InlineKeyboardMarkup()  # Опыт работы с клиентами
+client_experiens = InlineKeyboardMarkup(row_width=2)  # Опыт работы с клиентами
 yes_botton = InlineKeyboardButton(
     "👍", callback_data='Cli YES')
 no_button = InlineKeyboardButton(
     "👎", callback_data='Cli NO')
-client_experiens.add(yes_botton, no_button)
+reset = form_accept = InlineKeyboardButton(
+    "Начать сначала", callback_data='reset')
+client_experiens.add(yes_botton, no_button, reset)
 
 # Готов ли учиться обучаться работе с клиентами
-ready_to_study = InlineKeyboardMarkup()
+ready_to_study = InlineKeyboardMarkup(row_width=2)
 yes_botton = InlineKeyboardButton(
     "👍", callback_data='Study YES')
 no_button = InlineKeyboardButton(
     "👎", callback_data='Study NO')
-ready_to_study.add(yes_botton, no_button)
+reset = form_accept = InlineKeyboardButton(
+    "Начать сначала", callback_data='reset')
+ready_to_study.add(yes_botton, no_button, reset)
 
 # опрос по навыкам
 
@@ -55,8 +62,10 @@ def get_inline_keyboard() -> InlineKeyboardMarkup:
         "💼Прямые продажи B2C", callback_data='c_direct_sales_c')
     form_accept = InlineKeyboardButton(
         "👤Другое", callback_data='other')
+    reset = InlineKeyboardButton(
+        "Начать сначала", callback_data='reset')
     experience.add(servise, tele_sales_b, tele_sales_c,
-                   direct_sales_b, direct_sales_c, form_accept)
+                   direct_sales_b, direct_sales_c, form_accept, reset)
 
     return experience
 
