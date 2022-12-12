@@ -8,8 +8,7 @@ from asyncio import sleep
 @ dp.callback_query_handler()
 async def city(callback: types.CallbackQuery):
     if callback.data == 'Москва' or callback.data == 'Санкт-Петербург':
-        with open("hand.gif", "rb") as gif:
-            await bot.send_animation(chat_id=callback.message.chat.id, animation=gif)
+        await callback.message.answer(text="👋")
         if not users[callback.message.chat.id]:
             users[callback.message.chat.id] = {}
 
